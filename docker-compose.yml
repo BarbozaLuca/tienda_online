@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+  eureka-tiendaonline:
+    build: eureka-tiendaOnline
+    mem_limit: 512m
+    ports:
+      - "8761:8761"
+    networks:
+      - 'tiendaonline-network'
+
+  server-producto:
+    build: server-producto
+    mem_limit: 512m
+    ports:
+      - "8083:8083"
+    environment:
+      DB_URL: jdbc:mysql://mysql-producto:3306/producto_services?createDatabaseIfNotExist=true&serverTimeZone=UTC
+      DB_USER_NAME: root
+      DB_PASSWORD: root
+      SPRING_PROFILES_ACTIVE: docker
+    restart: always
+    depends_on:
+      mysql-producto:
+        condition: service_healthy
+    networks:
+      - 'tiendaonline-network'
+
+  server-carritodec:
+    build: server-CarritoDeC
+    mem_limit: 512m
+    ports:
+      - "8686:8686"
+    environment:
+      DB_URL: jdbc:mysql://mysql-carritodec:3306/carrito_services?createDatabaseIfNotExist=true&serverTimeZone=UTC
+      DB_USER_NAME: root
+      DB_PASSWORD: root
+      SPRING_PROFILES_ACTIVE: docker
+    restart: always
+    depends_on:
+      mysql-carritodec:
+        condition: service_healthy
+    networks:
+      - 'tiendaonline-network'
+      
+  server-ventas:
+    build: server-Ventas
+    mem_limit: 512m
+    ports:
+      - "8687:8687"
+    environment:
+      DB_URL: jdbc:mysql://mysql-ventas:3306/venta_services?createDatabaseIfNotExist=true&serverTimeZone=UTC
+      DB_USER_NAME: root
+      DB_PASSWORD: root
+      SPRING_PROFILES_ACTIVE: docker
+    restart: always
+    depends_on:
+      mysql-ventas:
+        condition: service_healthy
+    networks:
+      - 'tiendaonline-network'
+
+  mysql-producto:
+    image: mysql:8.0.33
+    container_name: mysql-producto
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: producto_services
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" , "ping", "-h", "localhost"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - tiendaonline-network
+
+  mysql-carritodec:
+    image: mysql:8.0.33
+    container_name: mysql-carritodec
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: carrito_services
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" , "ping", "-h", "localhost"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - tiendaonline-network
+
+  mysql-ventas:
+    image: mysql:8.0.33
+    container_name: mysql-ventas
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: venta_services
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" , "ping", "-h", "localhost"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - tiendaonline-network
+
+networks:
+  tiendaonline-network:
