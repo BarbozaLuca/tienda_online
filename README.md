@@ -60,5 +60,5 @@ Cada servicio está desacoplado y se comunica a través de un API Gateway, con b
 - JDK 17
 ---
 ## 📬 Contacto
-Luca Nicolas Barboza - barbozaluca04@gmail.com
-Enlace del proyecto: https://github.com/BarbozaLuca/tienda_online.git
+- Luca Nicolas Barboza - barbozaluca04@gmail.com
+- Enlace del proyecto: https://github.com/BarbozaLuca/tienda_online.git
