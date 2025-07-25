@@ -58,7 +58,25 @@ Cada servicio está desacoplado y se comunica a través de un API Gateway, con b
 
 - Docker y Docker Compose instalados
 - JDK 17
+
 ---
+
+### Pasos
+
+1. Clonar el repositorio:
+
+   git clone https://github.com/BarbozaLuca/tienda_online.git
+   
+2. Construir los servicios:
+   
+    docker-compose build
+
+3. Levantar los contenedores:
+
+   docker-compose up
+   
+---
+
 ## 📬 Contacto
 - Luca Nicolas Barboza - barbozaluca04@gmail.com
 - Enlace del proyecto: https://github.com/BarbozaLuca/tienda_online.git
